@@ -3,7 +3,7 @@ package org.shashank.library;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+
 public class Library3Application {
 
 	public static void main(String[] args) {
