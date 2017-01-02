@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Add Student</title>
+</head>
+<body>
+	<p th:text="${msg}"></p>
+	<form th:action="@{addStudent/addStudentDo}" method="post">
+		First Name :
+		<input type="text" name="firstName" />
+		Last Name :
+		<input type="text" name="lastName" />
+		Department :
+		<input type="text" name="department" />
+		Email :
+		<input type="email" name="email" />
+		Street :
+		<input type="text" name="address.street" />
+		City :
+		<input type="text" name="address.city" />
+		State :
+		<input type="text" name="address.state" />
+		Pincode :
+		<input type="number" name="address.pincode" min="100000" max="999999" />
+		<input type="submit" value="Add" />
+	</form>
+</body>
+</html>

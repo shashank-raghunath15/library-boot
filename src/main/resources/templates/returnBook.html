@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Return Book</title>
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css"
+/>
+</head>
+<body>
+	<p th:text="${msg}"></p>
+	<th:block th:each="subscription : ${subscriptions}">
+		<p th:text="${subscription.bookCopy.id}"></p>
+		<p th:text="${subscription.bookCopy.book.title}"></p>
+		<p th:text="${subscription.issueDate}"></p>
+		<p th:text="${subscription.expectedReturnDate}"></p>
+		<div th:if="${subscription.actualReturnDate == null}">
+			<form id="form-1" method="post"
+				th:action="@{returnBook/returnBookDo}"
+			>
+				<input type="hidden" th:value="${subscription.id}" name="id" />
+				<input type="submit" value="Return" />
+			</form>
+		</div>
+	</th:block>
+</body>
+</html>

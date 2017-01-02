@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Welcome Subsciber</title>
+</head>
+<body>
+	<p th:text="${error}"></p>
+	<p th:text="${msg}"></p>
+	Welcome
+	<p th:text="${session.login.user.firstName}"></p>
+
+	<a th:href="@{/subscriber/subscribe}">Subscribe</a>
+	<a th:href="@{/subscriber/returnBook}">Return Book</a>
+	<form th:action="@{/logout}" method="post">
+		<button type="submit">Logout</button>
+	</form>
+</body>
+</html>

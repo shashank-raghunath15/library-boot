@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Subscibe</title>
+<link rel="stylesheet"
+	href="http://code.jquery.com/ui/1.9.0/themes/smoothness/jquery-ui.css"
+/>
+</head>
+<body>
+	<p th:text="${msg}"></p>
+
+	<form th:action="@{subscribe/subscribeDo}" method="post">
+		<table>
+			<tr>
+				<td>Title</td>
+				<td><input list="bookList" name="isbn" id="book"> <datalist
+						id="bookList"
+					>
+						<option th:each="book : ${books}" th:value="${book.isbn}"
+							th:text="${book.title}"
+						></option>
+
+					</datalist></td>
+			</tr>
+			<tr>
+				<td>Isbn</td>
+				<td><textarea rows="1" cols="21" id="isbn"></textarea></td>
+			</tr>
+			<tr>
+				<td>Publisher</td>
+				<td><textarea rows="1" cols="21" id="publisher"></textarea></td>
+			</tr>
+			<tr>
+				<td>Language</td>
+				<td><textarea rows="1" cols="21" id="language"></textarea></td>
+			</tr>
+			<tr>
+				<td>Authors</td>
+				<td><textarea rows="2" cols="21" id="authors"></textarea></td>
+			</tr>
+			<tr>
+				<td>Genres</td>
+				<td><textarea rows="2" cols="21" id="genres"></textarea></td>
+			</tr>
+			<tr>
+				<td>Issue Date:</td>
+				<td><input type="text" name="issueDate" id="issueDate" /></td>
+			</tr>
+		
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Subscribe" /></td>
+			</tr>
+		</table>
+	</form>
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.js"
+	integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+	crossorigin="anonymous" type="text/javascript"
+></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"
+	integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+	crossorigin="anonymous"
+></script>
+<script th:inline="javascript">
+	//<![CDATA[
+
+	$(document).ready(function() {
+		 $( function() {
+			    $( "#issueDate" ).datepicker({
+			    	defaultDate: +0,
+			    	autoSize: true,
+			    	
+			    	});
+			  } );	
+		$("#book").on("input",function(){
+				var isbn = $("#book").val();
+				var bookList = /*[[${books}]]*/ null;
+				$.each( bookList, function( key, book ) {
+				    if(isbn == book.isbn){
+					    var authors = [];
+					    var genres = [];
+					    $("textarea#isbn").val(book.isbn);
+					    $("textarea#publisher").val(book.publisher);
+					    $("textarea#language").val(book.language);
+					   $.each(book.authors, function(key, author){
+							authors.push(author.name);
+						   });
+					   $("textarea#authors").val(authors.join(','));
+					   $.each(book.genres, function(key, genre){
+							genres.push(genre.name);
+						   });
+					   $("textarea#genres").val(genres.join(','));
+					   
+					  }
+				});
+			});
+
+
+	});
+
+	//]]>
+</script>
+</html>

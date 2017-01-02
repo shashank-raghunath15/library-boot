@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Welcome Admin</title>
+</head>
+<body
+	th:if="${session !=null} and ${session.login.user instanceof T(org.shashank.library.domain.Admin)}">
+	<p th:text="${error}"></p>
+	<p th:text="${msg}"></p>
+	Welcome
+	<p th:text="${session.login.user.lastName}"
+		th:unless="${session == null}">Text</p>
+	<a th:href="@{/admin/addStudent}">Add Student</a>
+	<a th:href="@{/admin/addProfessor}">Add Professor</a>
+	<a th:href="@{/admin/addBook}">Add Book</a>
+	<form th:action="@{/logout}" method="post">
+		<button type="submit">Logout</button>
+	</form>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Add Books</title>
+</head>
+<body>
+	<p th:text="${msg}"></p>
+
+
+	<fieldset>
+		ISBN:
+		<input type="number" name="isbn" min="1000000000000"
+			max="9999999999999"
+		/>
+		<br> Title:
+		<input type="text" name="title" />
+		<br> Publisher:
+		<input type="text" name="publisher" />
+		<br> Language:
+		<input type="text" name="language" />
+		<br> Author:
+		<input type="text" name="authors[0].name" id="auth" />
+
+		<button type="button" id="addAuthor">Add Author</button>
+		<br> Genre:
+		<input type="text" name="genres[0].name" id="genr" />
+
+		<button type="button" id="addGenre">Add Genre</button>
+		<br> Number of Copies
+		<input type="number" min="1" name="noOfCopies" />
+		<br>
+
+	</fieldset>
+
+	<form th:action="@{addBook/addBookDo}" method="post">
+
+		<input type="submit" value="Submit" />
+
+
+
+	</form>
+	<script src="https://code.jquery.com/jquery-3.1.1.js"
+		integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+		crossorigin="anonymous" type="text/javascript"
+	></script>
+	<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"
+		integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+		crossorigin="anonymous"
+	></script>
+	<script th:inline="javascript">
+	//<![CDATA[
+		$(document).ready(function(){
+		var i =0;
+		var j=0;
+		$("button#addAuthor").click(function(){
+		i++;
+				var add = '<br>Author: <input type="text" name="authors['+i+'].name"/>';
+				$("#auth").after(add);
+		
+			});
+		$("button#addGenre").click(function(){
+		j++;
+				var add = '<br>Genre: <input type="text" name="genres['+j+'].name"/>';
+				$("#genr").after(add);
+		
+			});
+		});
+		//]]>
+	</script>
+</body>
+</html>
