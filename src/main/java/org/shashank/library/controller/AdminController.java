@@ -11,9 +11,12 @@ import org.shashank.library.domain.Student;
 import org.shashank.library.service.BookService;
 import org.shashank.library.service.UserService;
 import org.shashank.library.util.LoginUtil;
+import org.shashank.library.viewModel.AddBookViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -44,7 +47,7 @@ public class AdminController {
 		return new ModelAndView(new RedirectView("/"));
 	}
 
-	@RequestMapping("/addStudent")
+	@GetMapping("/addStudent")
 	public ModelAndView student(HttpSession httpSession) {
 		if (loginUtil.isLoggedIn(httpSession, Admin.class)) {
 			ModelAndView modelAndView = new ModelAndView("addStudent");
@@ -53,7 +56,7 @@ public class AdminController {
 		return new ModelAndView(new RedirectView("/"));
 	}
 
-	@RequestMapping("/addProfessor")
+	@GetMapping("/addProfessor")
 	public ModelAndView professor(HttpSession httpSession) {
 		if (loginUtil.isLoggedIn(httpSession, Admin.class)) {
 			ModelAndView modelAndView = new ModelAndView("addProfessor");
@@ -62,8 +65,8 @@ public class AdminController {
 		return new ModelAndView(new RedirectView("/"));
 	}
 
-	@RequestMapping("/addBook")
-	public ModelAndView book(HttpSession httpSession) {
+	@GetMapping("/addBook")
+	public ModelAndView book(HttpSession httpSession, AddBookViewModel addBookViewModel) {
 		if (loginUtil.isLoggedIn(httpSession, Admin.class)) {
 			ModelAndView modelAndView = new ModelAndView("addBook");
 			return modelAndView;
@@ -71,17 +74,17 @@ public class AdminController {
 		return new ModelAndView(new RedirectView("/"));
 	}
 
-	@RequestMapping(value = "/addStudent/addStudentDo", method = RequestMethod.POST)
+	@PostMapping(value = "/addStudent")
 	public ModelAndView addStudent(Student student, Login login, RedirectAttributes redirectAttributes,
 			HttpSession httpSession) {
 		if (loginUtil.isLoggedIn(httpSession, Admin.class)) {
 			if (userService.addUser(student, login)) {
-				ModelAndView modelAndView = new ModelAndView(new RedirectView("../addStudent", false));
+				ModelAndView modelAndView = new ModelAndView("addStudent");
 				redirectAttributes.addFlashAttribute("msg",
 						"Student " + student.getFirstName() + " " + student.getLastName() + "added successfully");
 				return modelAndView;
 			}
-			ModelAndView modelAndView = new ModelAndView(new RedirectView("../addStudent", false));
+			ModelAndView modelAndView = new ModelAndView("addStudent");
 			redirectAttributes.addFlashAttribute("msg", "Email already exists");
 			return modelAndView;
 		}
@@ -105,14 +108,14 @@ public class AdminController {
 		return new ModelAndView(new RedirectView("/"));
 	}
 
-	@RequestMapping(value = "/addBook/addBookDo", method = RequestMethod.POST)
-	public ModelAndView addBook(@Valid Book book, int noOfCopies, RedirectAttributes redirectAttributes,
-			HttpSession httpSession, BindingResult bindingResult) {
+	@PostMapping(value = "/addBook")
+	public ModelAndView addBook(@Valid AddBookViewModel addBookViewModel, BindingResult bindingResult, int noOfCopies,
+			RedirectAttributes redirectAttributes, HttpSession httpSession) {
 		if (loginUtil.isLoggedIn(httpSession, Admin.class)) {
 			if (bindingResult.hasFieldErrors()) {
-				return new ModelAndView("../addBook");
+				return new ModelAndView("addBook");
 			}
-			bookService.addBooks(book, noOfCopies);
+			bookService.addBooks(addBookViewModel.getBook(), addBookViewModel.getNoOfCopies());
 			ModelAndView modelAndView = new ModelAndView(new RedirectView("../addBook", false));
 			redirectAttributes.addFlashAttribute("msg", "Books added successfully");
 			return modelAndView;

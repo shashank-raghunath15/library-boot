@@ -7,39 +7,48 @@
 <body>
 	<p th:text="${msg}"></p>
 
-<form th:action="@{addBook/addBookDo}" th:object="${book}" method="post">
-	<fieldset>
-		ISBN:
-		<input type="number" name="isbn" min="1000000000000"
-			max="9999999999999"
-		/>
-		<br></br> Title:
-		<input type="text" name="title" />
-		<br></br> Publisher:
-		<input type="text" name="publisher" />
-		<br></br> Language:
-		<p th:if="${#fields.hasErrors('language')}" th:errors="*{language}"></p>
-		<input type="text" name="language" />
-		<br></br> Author:
-		<input type="text" name="authors[0].name" id="auth" />
+	<form th:action="@{addBook}" method="post">
 
-		<button type="button" id="addAuthor">Add Author</button>
-		<br></br> Genre:
-		<input type="text" name="genres[0].name" id="genr" />
+			<p th:if="${#fields.hasErrors('${addBookViewModel.book.isbn}')}" th:errors="${addBookViewModel.book.isbn}"></p>
 
-		<button type="button" id="addGenre">Add Genre</button>
-		<br></br> Number of Copies
-		<input type="number" min="1" name="noOfCopies" />
-		<br></br>
+				ISBN:
+				<input type="number" th:field="${addBookViewModel.book.isbn}" min="1000000000000"
+					max="9999999999999"
+				/>
+				<!-- <br></br> Title:
+				<input type="text" th:field="*{title}" />
+			<p th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+			<br></br> Publisher:
+			<input type="text" th:field="*{publisher}" />
+			<p th:if="${#fields.hasErrors('publisher')}" th:errors="*{publisher}"></p>
+			<br></br> Language:
+			<p th:if="${#fields.hasErrors('language')}" th:errors="*{language}"></p>
+			<input type="text" th:field="*{language}" />
+			<br></br> Author:
+			<input type="text" th:field="*{authors[0].name}" id="auth" />
+			<p th:if="${#fields.hasErrors('authors')}"
+				th:errors="*{authors[0].name}"
+			></p>
+			<button type="button" id="addAuthor">Add Author</button>
+			<p th:if="${#fields.hasErrors('genres')}"
+				th:errors="*{genres[0].name}"
+			></p>
+			<br></br> Genre:
+			<input type="text" th:field="*{genres[0].name}" id="genr" />
 
-	</fieldset>
+			<button type="button" id="addGenre">Add Genre</button>
+			<br></br> Number of Copies
+			<input type="number" min="1" name="noOfCopies" />
+			<br></br>
 
-	
+		</fieldset>
+
+
 
 		<input type="submit" value="Submit" />
 
 
-
+ -->
 	</form>
 	<script src="https://code.jquery.com/jquery-3.1.1.js"
 		integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
@@ -56,13 +65,13 @@
 		var j=0;
 		$("button#addAuthor").click(function(){
 		i++;
-				var add = '<br></br>Author: <input type="text" name="authors['+i+'].name"/>';
+				var add = '<br></br>Author: <input type="text" th:field="*{authors['+i+'].name}"/>';
 				$("#auth").after(add);
 		
 			});
 		$("button#addGenre").click(function(){
 		j++;
-				var add = '<br></br>Genre: <input type="text" name="genres['+j+'].name"/>';
+				var add = '<br></br>Genre: <input type="text" th:field="*{genres['+j+'].name}"/>';
 				$("#genr").after(add);
 		
 			});
