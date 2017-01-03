@@ -7,33 +7,34 @@
 <body>
 	<p th:text="${msg}"></p>
 
-
+<form th:action="@{addBook/addBookDo}" th:object="${book}" method="post">
 	<fieldset>
 		ISBN:
 		<input type="number" name="isbn" min="1000000000000"
 			max="9999999999999"
 		/>
-		<br> Title:
+		<br></br> Title:
 		<input type="text" name="title" />
-		<br> Publisher:
+		<br></br> Publisher:
 		<input type="text" name="publisher" />
-		<br> Language:
+		<br></br> Language:
+		<p th:if="${#fields.hasErrors('language')}" th:errors="*{language}"></p>
 		<input type="text" name="language" />
-		<br> Author:
+		<br></br> Author:
 		<input type="text" name="authors[0].name" id="auth" />
 
 		<button type="button" id="addAuthor">Add Author</button>
-		<br> Genre:
+		<br></br> Genre:
 		<input type="text" name="genres[0].name" id="genr" />
 
 		<button type="button" id="addGenre">Add Genre</button>
-		<br> Number of Copies
+		<br></br> Number of Copies
 		<input type="number" min="1" name="noOfCopies" />
-		<br>
+		<br></br>
 
 	</fieldset>
 
-	<form th:action="@{addBook/addBookDo}" method="post">
+	
 
 		<input type="submit" value="Submit" />
 
@@ -55,13 +56,13 @@
 		var j=0;
 		$("button#addAuthor").click(function(){
 		i++;
-				var add = '<br>Author: <input type="text" name="authors['+i+'].name"/>';
+				var add = '<br></br>Author: <input type="text" name="authors['+i+'].name"/>';
 				$("#auth").after(add);
 		
 			});
 		$("button#addGenre").click(function(){
 		j++;
-				var add = '<br>Genre: <input type="text" name="genres['+j+'].name"/>';
+				var add = '<br></br>Genre: <input type="text" name="genres['+j+'].name"/>';
 				$("#genr").after(add);
 		
 			});

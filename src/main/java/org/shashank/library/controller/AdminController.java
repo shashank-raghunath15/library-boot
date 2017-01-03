@@ -1,6 +1,7 @@
 package org.shashank.library.controller;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.shashank.library.domain.Admin;
 import org.shashank.library.domain.Book;
@@ -12,6 +13,7 @@ import org.shashank.library.service.UserService;
 import org.shashank.library.util.LoginUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -104,10 +106,12 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "/addBook/addBookDo", method = RequestMethod.POST)
-	public ModelAndView addBook(Book book, int noOfCopies, RedirectAttributes redirectAttributes,
-			HttpSession httpSession) {
+	public ModelAndView addBook(@Valid Book book, int noOfCopies, RedirectAttributes redirectAttributes,
+			HttpSession httpSession, BindingResult bindingResult) {
 		if (loginUtil.isLoggedIn(httpSession, Admin.class)) {
-
+			if (bindingResult.hasFieldErrors()) {
+				return new ModelAndView("../addBook");
+			}
 			bookService.addBooks(book, noOfCopies);
 			ModelAndView modelAndView = new ModelAndView(new RedirectView("../addBook", false));
 			redirectAttributes.addFlashAttribute("msg", "Books added successfully");
